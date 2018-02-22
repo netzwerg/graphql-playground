@@ -1,0 +1,14 @@
+interface Identifiable {
+    id: Int!
+}
+
+type Location implements Identifiable {
+    id: Int!
+    x: Int!
+    y: Int!
+}
+
+type Query {
+    location(id: Int!): Location
+    locations: [Locations]
+}
