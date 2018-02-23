@@ -4,7 +4,7 @@ import sangria.schema._
 
 object SchemaDef {
 
-  import Models._
+  import ch.netzwerg.demo.common.Models._
   import sangria.macros.derive._
 
   val IdentifiableType = InterfaceType(

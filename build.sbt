@@ -18,7 +18,7 @@ lazy val global = project
 lazy val server = project
   .settings(
     sharedSettings,
-    libraryDependencies ++= serverDependencies
+    libraryDependencies ++= serverDependencies.value
   )
   .dependsOn(common)
 
@@ -27,6 +27,13 @@ lazy val common = project
   .disablePlugins(RevolverPlugin)
 
 lazy val client = project
-  .settings(sharedSettings)
+  .settings(
+    sharedSettings,
+    libraryDependencies ++= clientDependencies.value,
+    jsDependencies ++= clientJsDependencies.value,
+    skip in packageJSDependencies := false, // yes, we want to package JS dependencies
+    scalaJSUseMainModuleInitializer := true
+  )
   .dependsOn(common)
+  .enablePlugins(ScalaJSPlugin)
   .disablePlugins(RevolverPlugin)

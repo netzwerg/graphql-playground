@@ -1,10 +1,8 @@
 package ch.netzwerg.demo.server
 
-import ch.netzwerg.demo.server.Models._
-import Models._
+import ch.netzwerg.demo.common.Models._
 import slick.jdbc.H2Profile.api._
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
 import scala.language.postfixOps
@@ -13,7 +11,7 @@ class LocationRepo(db: Database) {
 
   import LocationRepo._
 
-  def allLocations = db.run(Locations.result)
+  def allLocations: Future[Seq[Location]] = db.run(Locations.result)
 
   def locations(ids: Seq[LocationId]): Future[Seq[Location]] = db.run(Locations.filter(_.id inSet ids).result)
 
@@ -43,7 +41,7 @@ object LocationRepo {
     )
   )
 
-  def createDatabase() = {
+  def createDatabase(): LocationRepo = {
     val db = Database.forConfig("h2mem")
 
     Await.result(db.run(databaseSetup), 10 seconds)

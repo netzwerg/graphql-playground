@@ -15,11 +15,11 @@ import scala.util.{Failure, Success}
 
 object GraphQLServer {
 
-  val repository = LocationRepo.createDatabase()
+  private val repository = LocationRepo.createDatabase()
 
   case object TooComplexQuery extends Exception
 
-  val rejectComplexQueries = QueryReducer.rejectComplexQueries(300, (_: Double, _:LocationRepo) => TooComplexQuery)
+  private val rejectComplexQueries = QueryReducer.rejectComplexQueries(300, (_: Double, _:LocationRepo) => TooComplexQuery)
 
   val exceptionHandler: Executor.ExceptionHandler = {
     case (_, TooComplexQuery) => HandledException("Too complex query. Please reduce the field selection")

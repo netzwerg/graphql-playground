@@ -12,7 +12,7 @@ import Console._
 import scala.concurrent.Await
 import scala.language.postfixOps
 
-object Server extends App {
+object ServerApp extends App {
 
   val PORT = 8080
 
