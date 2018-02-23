@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Scala.js GraphQL Demo</title>
-    <script type="text/javascript" src="./target/scala-2.12/client-jsdeps.js"></script>
 </head>
 <body>
 
@@ -11,6 +10,9 @@
     <!-- Dynamic content -->
 </div>
 
+<!-- Include JavaScript dependencies -->
+<script type="text/javascript" src="./target/scala-2.12/client-jsdeps.js"></script>
+<!-- Include Scala.js compiled code (as of 0.6.15 this includes the launcher, thus it needs to be imported last) -->
 <script type="text/javascript" src="./target/scala-2.12/client-fastopt.js"></script>
 
 </body>
