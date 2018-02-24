@@ -11,7 +11,7 @@ lazy val global = project
   .aggregate(
     server,
     common,
-    client
+    `scalajs-client`
   )
   .disablePlugins(RevolverPlugin)
 
@@ -26,7 +26,7 @@ lazy val common = project
   .settings(sharedSettings)
   .disablePlugins(RevolverPlugin)
 
-lazy val client = project
+lazy val `scalajs-client` = project
   .settings(
     sharedSettings,
     libraryDependencies ++= clientDependencies.value,
