@@ -15,6 +15,8 @@ class LocationRepo(db: Database) {
 
   def locations(ids: Seq[LocationId]): Future[Seq[Location]] = db.run(Locations.filter(_.id inSet ids).result)
 
+  def insert(location: Location) = db.run(LocationRepo.insertLocation(location))
+
 }
 
 object LocationRepo {
@@ -37,9 +39,11 @@ object LocationRepo {
       Location(1, 0, 0),
       Location(2, 1, 0),
       Location(3, 1, 1),
-      Location(4, 1, 0)
+      Location(4, 0, 1)
     )
   )
+
+  def insertLocation(location: Location) = DBIO.seq(Locations += location)
 
   def createDatabase(): LocationRepo = {
     val db = Database.forConfig("h2mem")

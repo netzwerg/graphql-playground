@@ -1,9 +1,13 @@
 package ch.netzwerg.demo.server
 
+import java.lang.Math
+import java.util.concurrent.atomic.AtomicInteger
+
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import akka.http.scaladsl.model.StatusCodes._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server._
+import ch.netzwerg.demo.common.Models.Location
 import sangria.ast.Document
 import sangria.execution._
 import sangria.marshalling.sprayJson._
@@ -47,6 +51,14 @@ object GraphQLServer {
       case Failure(error) =>
         complete(BadRequest, JsObject("error" -> JsString(error.getMessage)))
     }
+  }
+
+
+  val idCounter = new AtomicInteger(5)
+  def insertRandomLocation() = {
+    val x = Math.round(Math.random()).intValue()
+    val y = Math.round(Math.random()).intValue()
+    repository.insert(Location(idCounter.getAndIncrement(), x , y))
   }
 
   private def executeGraphQLQuery(query: Document, op: Option[String], vars: JsObject)(implicit e: ExecutionContext) = {

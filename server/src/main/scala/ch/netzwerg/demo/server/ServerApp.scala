@@ -1,6 +1,8 @@
 package ch.netzwerg.demo.server
 
-import akka.actor.ActorSystem
+import java.util.concurrent.atomic.AtomicInteger
+
+import akka.actor.{Actor, ActorSystem, Props}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import akka.http.scaladsl.server.Directives._
@@ -26,6 +28,25 @@ object ServerApp extends App {
 
   logger("Starting GRAPHQL server...")
 
+  val Tick = "tick"
+
+  class TickActor extends Actor {
+    def receive = {
+      case Tick ⇒
+        GraphQLServer.insertRandomLocation()
+    }
+  }
+
+  val tickActor = actorSystem.actorOf(Props(classOf[ServerApp.TickActor]))
+
+  //This will schedule to send the Tick-message
+  //to the tickActor after 0ms repeating every 50ms
+  val cancellable = actorSystem.scheduler.schedule(
+    0 milliseconds,
+    1 seconds,
+    tickActor,
+    Tick)
+
   //shutdown Hook
   scala.sys.addShutdownHook(() -> shutdown())
 
@@ -47,6 +68,7 @@ object ServerApp extends App {
   def shutdown(): Unit = {
 
     logger("Terminating...", YELLOW)
+    cancellable.cancel()
     actorSystem.terminate()
     Await.result(actorSystem.whenTerminated, 30 seconds)
     logger("Terminated... Bye", YELLOW)
