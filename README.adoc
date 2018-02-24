@@ -1,7 +1,8 @@
-= Isomorphic Scala/Scala.js GraphQL Example
+= GraphQL Explorations
 
 * Server: Akka HTTP
 * API: Sangria (Scala GraphQL implementation)
-* Client: Scala.js
+* Scala.js/React Client
+* Elm Client
 
 Based on https://github.com/marioosh/graphql-akka-http
